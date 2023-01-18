@@ -44,7 +44,53 @@ class Array{
     }
     this->size -= 1;
  }
+
+ Array &operator+(int val){
+    add_back(val);
+    return *this;
+ } 
  
+ Array &operator-(int val){
+    for(int i = 0;i < this->size; ++i){
+        if (arr[i] == val){
+            erase(i);
+        }       
+    }
+
+    return *this;
+ }
+
+ bool operator<(const Array & other){
+    return this->size < other.size;
+ }
+
+ bool operator>(const Array & other){
+    return this->size > other.size;
+ }
+
+ bool operator<=(const Array & other){
+    return this->size <= other.size;
+ }
+
+ bool operator>=(const Array & other){
+    return this->size >= other.size;
+ }
+
+ bool operator==(const Array & other){
+    return this->size == other.size;
+ }
+
+ Array &operator-(const Array & other){
+    for(int i = 0;i < this->size && i < other.size; ++i ){
+        this->arr[i] -= other.arr[i];
+    }
+    return *this;
+ }
+ 
+ int &operator[](int i){
+    return this->arr[i];
+ }
+
  ~Array(){
     delete [] this->arr;
  }
@@ -52,21 +98,57 @@ class Array{
 };
 
 int main(){
+    //массивы
     Array arr(15);
+    Array arr1(16);
+    //добавление значение в массив
     arr.add_back(1);
     arr.add_back(2);
     arr.add_back(3);
     arr.add_back(4);
 
+    //вывод массива и прибавление значения
     arr.print();
     arr.add_back(5);
     arr.add_back(6);
     arr.print();
 
+    //замена значения в массиве
     arr.insert(3, 22);
     arr.print();
 
+    //удаление значения
     arr.erase(3);
+    arr.print();
+
+    //прибавление
+    arr + 6;
+    arr.print();
+
+    //удаление
+    arr - 3;
+    arr.print();
+
+    //удаление
+    arr - 6 - 6;
+    arr.print();
+
+    //прибавление
+    arr1 + 1 + 4 + 5  + 7;
+
+    //проверка на < > <= >= ==
+    if (arr < arr1){
+        std::cout<<"arr < arr1";
+    }else{
+        std::cout<<"arr > arr1";
+    }
+
+
+    arr + 4 +7 +8;
+    
+    arr.print();
+    arr1.print();
+    arr - arr1;
     arr.print();
 
     return 0;
