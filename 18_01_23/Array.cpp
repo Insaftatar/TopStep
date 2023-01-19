@@ -138,13 +138,13 @@ int main(){
 
     //проверка на < > <= >= ==
     if (arr < arr1){
-        std::cout<<"arr < arr1";
+        std::cout<<"arr < arr1"<<"\n";
     }else{
-        std::cout<<"arr > arr1";
+        std::cout<<"arr > arr1"<<"\n";
     }
 
 
-    arr + 4 +7 +8;
+    arr + 4 + 7 + 8;
     
     arr.print();
     arr1.print();
