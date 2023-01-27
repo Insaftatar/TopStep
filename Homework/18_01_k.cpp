@@ -7,7 +7,7 @@ class fio {
     std::string patronymic;
 
     public:
-    fio()) {
+    fio() {
         std::cout << "Input name: ";
         std::cin >> this->name;
         std::cout << "Input surnames: ";

@@ -1,70 +1,209 @@
 #include <iostream>
 
-class Point{
-    private:
+class Point {
+ private:
     int x, y;
-    public:
-    Point(): Point(0, 0){}
 
-    Point(const Point &other) : Point(other.x, other.y){}
+ public:
+    Point() : Point(0, 0) {}
 
-    Point(int x, int y){
+    Point(const Point &other) : Point(other.x, other.y) {}
+
+    Point(int x, int y) {
         this->x = x;
         this->y = y;
     }
-    
-    Point &operator=(const Point &other){
+
+    Point &operator=(const Point &other) {
         this->x = other.x;
         this->y = other.y;
         return *this;
     }
 
-    Point operator+(int val) const{
-        return Point(this->x + val ,this->y + val);
+    Point operator+(int val) const {
+        return Point(this->x + val, this->y + val);
     }
-    
-    Point operator+(const Point &other) const{
-        return Point (this->x + other.x, this->y + other.y);
+    Point operator+(const Point &other) const {
+        return Point(this->x + other.x, this->y + other.y);
     }
 
-    void print(){
+    Point operator-(int val) const {
+        return Point(this->x - val, this->y - val);
+    }
+    Point operator-(const Point &other) const {
+        return Point(this->x - other.x, this->y - other.y);
+    }
+
+    void print() {
         std::cout << "[" << this->x << ", " << this->y << "]\n";
     }
 
     int getX() const {
         return this->x;
     }
-    
     int getY() const {
         return this->y;
     }
 
 };
 
-    std::ostream &operator<<(std::ostream &out, const Point &point){
+    std::ostream &operator<<(std::ostream &out, const Point& point) {
         out << "[" << point.getX() << ", " << point.getY() << "]";
         return out;
     }
 
+
 template <typename T>
-void print_any(const T & val){
-    std::cout << val << "\n";
+class Array {
+ private:
+    T* arr;
+    int size;
+    int cap;
+ public:
+    Array() {
+        this->arr = nullptr;
+        size = 0;
+        cap = 0;
+    }
+
+    int getSize() {return this->size; }
+
+    Array(const Array &other) : Array(other.arr, other.size) {}
+
+    Array(const T* arr, int size) {
+        this->cap = size * 2;
+        this->arr = new T[this->cap];
+        this->size = size;
+        for (int i = 0; i < size; ++i) {
+            this->arr[i] = arr[i];
+        }
+    }
+
+    T &operator[](int index) {
+        return this->arr[index];
+    }
+
+    void add_back(T val) {
+        if (this->size + 1 > this->cap){
+            std::cout<<"No: cap = "<<this->cap<<"\n";
+        }else{
+            this->arr[size] = val;
+            size += 1;
+    }
+    }
+
+    void delete_index(int index) {
+        for(int i = index + 1;i < this->size; ++i){
+            this->arr[i - 1] = this->arr[i];
+        }
+        this->size -= 1;
+    }
+
+    void add_index(T val, int index) {
+        this->size += 1;
+        for(int i = this->size;i > index;--i){
+            this->arr[i] = arr[i - 1];
+        }
+        this->arr[index] = val;
+    }
+
+    void plus_all(T val) {
+        for(int i = 0; i < size;++i){
+            this->arr[i] = this->arr[i] + val;
+        }
+        // прибавить ко всем элементам val
+        // {1, 2, 3, 4} plus_all(3) {4, 5, 6, 7}
+    }
+
+    void minus_all(T val) {
+        for(int i = 0; i < size;++i){
+            this->arr[i] = this->arr[i] - val;
+        }
+        // вычесть из всех элементов val
+        // {1, 2, 3, 4} minus_all(3) {-2, -1, 0, 1}
+    }
+
+    void add_back1(T *arr, int size){
+        int a = this->size;
+        this->size = this->size + size;
+        for(int i = a; i < this->size + size ;++i){
+            this->arr[i + 1] = arr[size + 1];
+        }
+    }
+
+    void print() {
+        std::cout << "[ ";
+        for (int i = 0; i < this->size; ++i) {
+            std::cout << this->arr[i];
+            if (i != size - 1) {
+                std::cout << ", ";
+            }
+        }
+        std::cout << " ]\n";
+    }
+
+    ~Array() {
+        delete [] this->arr;
+    }
+};
+
+    template <typename T>
+    std::ostream &operator<<(std::ostream &out, Array<T> array) {
+        out << "[ ";
+        for (int i = 0; i < array.getSize(); ++i) {
+            out << array[i];
+            if (i != array.getSize() - 1) {
+                out << ", ";
+            }
+        }
+        out << " ]";
+        return out;
+    }
+
+
+template <typename T>
+void print_any(const T &val) {
+    std::cout << val + val << "\n";
 }
 
 int main()
 {
-    Point a(3, 5);
-    Point b(2, 1);
+    Point points[3] {Point(1,2), Point(3, 6), Point(8, 56)};
+    int arr[5] { 1, 2, 3, 4, 5};
+    int arr1[4] { 1, 2, 3, 4};
 
-    //a = a + 5;
-    //std::cout << a << "\n";
+    Array<Point> array_points(points, 3);
+    Array<int> array_int(arr, 5);
+    std::cout << "init points" << array_points << "\n";
+    std::cout << "init int"<< array_int << "\n\n";
 
-    //a = a + b;
-    //std::cout << a << "\n";
+    array_int.add_back(7);
+    array_points.add_back(Point(7, 1));
+    std::cout << "add_back(Point(7, 1))" << array_points << "\n";
+    std::cout << "add_back(7)" << array_int << "\n\n";
 
-    print_any(7);
-    print_any(7.2);
-    print_any(a);
+    array_int.delete_index(2);
+    array_points.delete_index(2);
+    std::cout << "delete_index(2)" << array_points << "\n";
+    std::cout << "delete_index(2)" << array_int << "\n\n";
 
-    return 0;
+    array_int.add_index(2, 1);
+    array_points.add_index(Point(2, 1), 1);
+    std::cout << "add_index(Point(2, 1), 1)" << array_points << "\n";
+    std::cout << "add_index(2, 1)" << array_int << "\n\n";
+
+    array_points.plus_all(Point(1, 1));
+    array_int.plus_all(1);
+    std::cout << "plus_all(Point(1,1))" << array_points << "\n";
+    std::cout << "plus_all(1)" << array_int << "\n\n";
+
+    array_points.minus_all(Point(2, 0));
+    array_int.minus_all(2);
+    std::cout << "minus_all(Point(2,0))" << array_points << "\n";
+    std::cout << "minus_all(2)"  << array_int << "\n\n";
+
+    //array_points.add_back(Point(arr1, 4));
+    array_int.add_back1(arr1, 4);
+    //std::cout << "add back(Point(2,0))" << array_points << "\n";
+    std::cout << "add back(2)"  << array_int << "\n\n";
 }
