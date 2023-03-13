@@ -1,34 +1,49 @@
 #include <iostream>
+#include <string>
 
 class Student {
+    protected:
     std::string name;
-    int med_marks;
-    int year;
-    std::string kollectiv;
+    int age;
+    int rost;
+
+    public: 
+
+    Student() {}
+};
+
+class Aspirant : public Student {
+    int work_mark;
 
     public:
 
-    Student() : Student("none",0,0,"none") {}
+    Aspirant() : Aspirant("none", 0, 0) {}
 
-    Student(std::string name, int m, int y, std::string k) {
+    Aspirant(std::string name, int age, int rost) {
         this->name = name;
-        this->med_marks = m;
-        this->year = y;
-        this->kollectiv = k;
+        this->age = age;
+        this->rost = rost;
+    }
+
+    std::string get_info() {
+        std::string res = "";
+        res += this->name + " " + std::to_string(this->age) + " " + std::to_string(this->rost);
+
+        return res;
     }
 };
 
+std::ostream &operator<<(std::ostream &out, Aspirant &aspirant) {
+    out << aspirant.get_info();
 
-class Aspirant : public Student {
-
-    bool work;
-
-    public:
-    Aspirant() : Student() {}
-
-};
+    return out;
+}
 
 int main() {
+
+    Aspirant aspirant("Инмаф", 16, 175);
+
+    std::cout << aspirant;
 
     return 0;
 }
