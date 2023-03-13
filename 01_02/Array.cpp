@@ -33,9 +33,7 @@ class Array {
         this->size = size;
         this->cap = size;
 
-        for (int i = 0; i < size; ++i) {
-            this->array[i] = val;
-        }
+         
     }
 
     ~Array() {
